@@ -1,0 +1,23 @@
+#installing spark and Dependencies
+
+!apt-get install openjdk-8-jdk-headless -qq > /dev/null
+!wget -q http://archive.apache.org/dist/spark/spark-3.5.1/spark-3.5.1-bin-hadoop3.tgz
+!tar xf spark-3.5.1-bin-hadoop3.tgz
+!pip install -q findspark
+
+----------------------
+
+#setting Envirinment variables
+
+import os
+os.environ["JAVA_HOME"] = "/usr/lib/jvm/java-8-openjdk-amd64"
+os.environ["SPARK_HOME"] = "/content/spark-3.5.1-bin-hadoop3"
+
+#initializes a Spark session, with a configuration
+
+import findspark
+findspark.init()
+from pyspark.sql import SparkSession
+spark = SparkSession.builder.master("local[*]").getOrCreate()
+spark.conf.set("spark.sql.repl.eagerEval.enabled", True) # Property used to format output tables better
+spark
